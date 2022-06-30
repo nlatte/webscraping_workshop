@@ -1,40 +1,26 @@
 const pptr = require('puppeteer');
 
-const SELECTORS = {
-    name: '[class*="srp-river-results"] [class="s-item__title"]',
-};
+const SELECTORS = {};
 
-async function launch(url) {
-    const browser = await pptr.launch({ headless: !process.argv.includes('-hf') ? 1 : 0 });
-    const page = await browser.newPage();
+function prep_url() {}
 
-    await page.goto(url, { waitFor: 'networkIdle0' });
-    return { page, browser };
-}
+// open browser and create new page
+async function launch() {}
 
-async function scrape(page, n_results) {
-    const results = [];
+function goto_next_page(url, page_no) {}
 
-    while (results.length < n_results) {
-        const items = await page.$$(SELECTORS['name']);
+// collects the information of 1 single page
+async function scrape_page(page) {}
 
-        for (const item of items) {
-            let result = {};
+// main loop for scraping website
+async function scrape_site(page, max_pages, url) {}
 
-            result.name = await item.evaluate((e) => e.innerText);
-
-            results.push(result);
-        }
-    }
-    return results;
-}
-
-async function teardown(browser) {
-    browser.close();
-}
+// close browser
+async function teardown(browser) {}
 
 module.exports = {
     launch,
-    scrape,
+    scrape_site,
     teardown,
+    prep_url,
 };
